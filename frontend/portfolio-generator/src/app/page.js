@@ -23,12 +23,27 @@ export default function Home() {
 	return (
 		<div>
 
-			<h1>My Projects</h1>
-			<Projects 
-				imageSrc="/images/project1.png" 
-				projectUrl="https://example.com"
-				description="This is a cool project." 
-			/>
+			<h1 className="mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl dark:text-white">My Projects</h1>
+
+			<div className="flex justify-center space-x-4">
+				<Projects 
+					imageSrc="/images/project1.png" 
+					projectUrl="https://example.com"
+					description="This is a cool project." 
+				/>
+
+				<Projects 
+					imageSrc="/images/project1.png" 
+					projectUrl="https://example.com"
+					description="This is a cool project." 
+				/>
+
+				<Projects 
+					imageSrc="/images/project1.png" 
+					projectUrl="https://example.com"
+					description="This is a cool project." 
+				/>
+			</div>
 
 			<h1>Technologies</h1>
 			<Technologies techList={techList} />
