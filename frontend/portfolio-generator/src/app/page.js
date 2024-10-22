@@ -48,7 +48,7 @@ export default function Home() {
 				/>
 			</div>
 
-			<h1>Technologies</h1>
+			<h1 className="mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl dark:text-white">Technologies</h1>
 			<Technologies techList={techList} />
 		</div>
 	);
