@@ -6,7 +6,7 @@ const Projects = ({ imageSrc, projectUrl, description, title }) => {
         </a>
         <div className="p-5">
           <a href={projectUrl} target="_blank" rel="noopener noreferrer">
-            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Project</h5>
+            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{title}</h5>
           </a>
           <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{description}</p>
           <a

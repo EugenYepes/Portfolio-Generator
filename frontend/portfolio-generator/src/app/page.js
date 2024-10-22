@@ -27,18 +27,21 @@ export default function Home() {
 
 			<div className="flex justify-center space-x-4">
 				<Projects 
+					title="Project 1"
 					imageSrc="/images/project1.png" 
 					projectUrl="https://example.com"
 					description="This is a cool project." 
 				/>
 
 				<Projects 
+					title="Project 2"
 					imageSrc="/images/project1.png" 
 					projectUrl="https://example.com"
 					description="This is a cool project." 
 				/>
 
 				<Projects 
+					title="Project 3"
 					imageSrc="/images/project1.png" 
 					projectUrl="https://example.com"
 					description="This is a cool project." 
