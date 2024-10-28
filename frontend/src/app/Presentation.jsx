@@ -1,3 +1,5 @@
+"use client"
+
 export default function Presentation({ presentation }) {
     const bodyTextStyle = {
         fontWeight: presentation.bodyText?.isBold ? "bold" : "normal", // Asegura que bodyText existe

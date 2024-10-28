@@ -1,6 +1,7 @@
 "use client"
 import { useEffect, useState } from "react";
-const DEFAULT_USER = "nombre_usuario1";
+import { useBaseUrl } from "./context/BaseUrlContext";
+import Contact from "./Contact";
 import Experience from "./Experience";
 import Presentation from "./Presentation";
 import AboutMe from "./AboutMe";
@@ -8,14 +9,17 @@ import Certificates from "./Certificates";
 import Projects from "./Projects.jsx"
 import Technologies from "./Technologies.jsx"
 
+const DEFAULT_USER = "nombre_usuario5";
+
 export default function Home() {
-    const [portfolio, setPortfolio] = useState({});
-	const [isLoading, setIsLoading] = useState(true)
+	const baseUrl = useBaseUrl();
+	const [portfolio, setPortfolio] = useState({});
+	const [isLoading, setIsLoading] = useState(true);
 
 	console.log("Portfolio", portfolio);
 
 	useEffect(() => {
-		fetch(`http://localhost:4000/portfolio/${DEFAULT_USER}`)
+		fetch(`${baseUrl}/portfolio/${DEFAULT_USER}`)
 			.then(res => {
 				console.log("Respuesta", res)
 				return res.json();
@@ -31,34 +35,25 @@ export default function Home() {
 			});
 	}, []);
 
-	if(isLoading){
+
+	if (isLoading) {
 		return <div>Cargando...</div>
 	}
 
 	if (!portfolio || !portfolio.aboutMe || !portfolio.certificates) {
 		return <div>No se encontraron datos</div>;
 	}
-	
+
 	return (
 		<div>
-			<AboutMe aboutMe={ portfolio.aboutMe }/>
-			<Certificates certificates={ portfolio.certificates }/>
-			<Experience experiences={portfolio.experience}/>
-			<Presentation presentation={portfolio.presentation}/>
-
+			<Presentation presentation={portfolio.presentation} />
+			<AboutMe aboutMe={portfolio.aboutMe} />
+			<Experience experiences={portfolio.experience} />
+			<Certificates certificates={portfolio.certificates} />
 			<div className="flex justify-center space-x-4">
-				{projects.map((project) => (
-					<Projects
-					key={project.id}
-					title={project.title}
-					imageSrc={project.imageSrc}
-					projectUrl={project.projectUrl}
-					description={project.description}
-					/>
-				))}
+				<Projects projects={portfolio.projects} />
 			</div>
-			
-			<Technologies techList={techList} />
+			<Contact contact={portfolio.contact} />
 		</div>
 	);
 }

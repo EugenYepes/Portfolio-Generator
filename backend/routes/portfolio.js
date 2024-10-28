@@ -48,8 +48,44 @@ router.post("/", async (req, res) => {
 
 router.get("/:userName", async (req, res) => {
     const userName = req.params.userName;
-    const aboutMe = await getPortfolioById(userName);
-    res.json(aboutMe);
+    let portfolio = await getPortfolioById(userName);
+
+    // if the portfolio doesnt exist loads the default
+    if (!portfolio) {
+        portfolio = new Portfolio({
+            user: {
+                userName,
+                email: `${userName}@default.com`,
+                hashPassword: "defaultpasswordhash",
+            },
+            presentation: {},
+            aboutMe: {},
+            experience: {
+                sectionTitle: {},
+                experiences: [{}]
+            },
+            education: {
+                sectionTitle: {},
+                educations: [{}]
+            },
+            certificate: {
+                sectionTitle: {},
+                certificates: [{}]
+            },
+            technology: {
+                sectionTitle: {},
+                technologies: [{}]
+            },
+            project: {
+                sectionTitle: {},
+                projects: [{}]
+            },
+            contact: {},
+        });
+        
+    }
+    // TODO can be saved if its a new user
+    res.json(portfolio);
 });
 
 export default router;

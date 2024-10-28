@@ -14,6 +14,9 @@ app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
 app.use("/portfolio", portfolioRouter);
 
+app.use('/storage', express.static('storage'));
+
+
 app.listen(PORT, () => {
   console.log("Web server in the port:", PORT);
 });
