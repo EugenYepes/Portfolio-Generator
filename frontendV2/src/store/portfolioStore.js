@@ -2,7 +2,7 @@ import { create } from "zustand";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const API_URL = "http://localhost:4000/portfolio";
+const API_URL = `${import.meta.env.VITE_BASE_API_URL}/portfolio`;
 axios.defaults.withCredentials = true;
 
 export const usePortfolioStore = create(set => ({

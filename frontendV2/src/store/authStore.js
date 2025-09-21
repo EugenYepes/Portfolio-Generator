@@ -14,7 +14,7 @@ Es una variante a fetch()
 import axios from "axios";
 
 // Define la URL base del servidor para las solicitudes de autenticación
-const API_URL = "http://localhost:4000/auth";
+const API_URL = `${import.meta.env.VITE_BASE_API_URL}/auth`;
 
 // En cada request, axios va a poner las cookies en el request
 // Establecemos una configuración global para Axios que indica que todas las solicitudes hechas
