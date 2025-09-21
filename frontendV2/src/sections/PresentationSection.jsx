@@ -3,7 +3,6 @@ import { usePortfolioStore } from "../store/portfolioStore";
 import { useAuthStore } from "../store/authStore";
 import { Pencil } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { baseUrl } from "../utils/connection.js"
 
 const presentationSectionSection = ({ userName }) => {
   const {
@@ -52,8 +51,8 @@ const presentationSectionSection = ({ userName }) => {
       <img
         src={
           presentationSection
-            ? `${baseUrl}${presentationSection.image.url}`
-            : "/public/assets/default/presentation.jpg"
+            ? presentationSection.image.url
+            : "/assets/default/presentation.jpg"
         }
         alt={`${presentationSection ? presentationSection.name.text : "User"
           } Avatar`}

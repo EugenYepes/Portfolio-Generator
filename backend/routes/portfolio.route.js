@@ -35,16 +35,6 @@ import {
 } from "../controllers/portfolio.controller.js";
 
 import {
-	presentationImage,
-	addProjectImage,
-	editProjectImage,
-	addCertificateImage,
-	editCertificateImage,
-	addTechnologyImage,
-	editTechnologyImage
-} from '../middleware/images.js';
-
-import {
 	presentation,
 	aboutMe,
 	experience,
@@ -60,7 +50,7 @@ const defaultMulter = multer()
 
 // Presentation
 router.get("/:userName/presentation", (req, res) => getSection(req, res, presentation.section));
-router.put("/:userName/edit/presentation", verifyToken, authorizeOwner, presentationImage.single('image'), editPresentationSection);
+router.put("/:userName/edit/presentation", verifyToken, authorizeOwner, defaultMulter.single("image"), editPresentationSection);
 
 // About Me
 router.get("/:userName/aboutme", (req, res) => getSection(req, res, aboutMe.section));
@@ -76,8 +66,8 @@ router.delete("/:userName/delete/experience/:id", verifyToken, authorizeOwner, (
 // Projects
 router.get("/:userName/projects", (req, res) => getSection(req, res, project.section));
 router.put("/:userName/edit/projectsection", verifyToken, authorizeOwner, defaultMulter.none(), editProjectSection);
-router.post("/:userName/add/project", verifyToken, authorizeOwner, addProjectImage.single('image'), addProject);
-router.put("/:userName/edit/project/:id", verifyToken, authorizeOwner, editProjectImage.single('image'), editProject);
+router.post("/:userName/add/project", verifyToken, authorizeOwner, defaultMulter.single('image'), addProject);
+router.put("/:userName/edit/project/:id", verifyToken, authorizeOwner, defaultMulter.single('image'), editProject);
 router.delete("/:userName/delete/project/:id", verifyToken, authorizeOwner, (req, res) => deleteSectionItem(req, res, project.section, project.subSection));
 
 // Education
@@ -90,15 +80,15 @@ router.delete("/:userName/delete/education/:id", verifyToken, authorizeOwner, (r
 // Certificates
 router.get("/:userName/certificates", (req, res) => getSection(req, res, certificate.section));
 router.put("/:userName/edit/certificatesection", verifyToken, authorizeOwner, defaultMulter.none(), editCertificatesSection);
-router.post("/:userName/add/certificate", verifyToken, authorizeOwner, addCertificateImage.single('image'), addCertificate);
-router.put("/:userName/edit/certificate/:id", verifyToken, authorizeOwner, editCertificateImage.single('image'), editCertificate);
+router.post("/:userName/add/certificate", verifyToken, authorizeOwner, defaultMulter.single('image'), addCertificate);
+router.put("/:userName/edit/certificate/:id", verifyToken, authorizeOwner, defaultMulter.single('image'), editCertificate);
 router.delete("/:userName/delete/certificate/:id", verifyToken, authorizeOwner, (req, res) => deleteSectionItem(req, res, certificate.section, certificate.subSection));
 
 // Techonologies
 router.get("/:userName/technologies", (req, res) => getSection(req, res, technology.section));
 router.put("/:userName/edit/technologiessection", verifyToken, authorizeOwner, defaultMulter.none(), editTechnologiesSection);
-router.post("/:userName/add/technology", verifyToken, authorizeOwner, addTechnologyImage.single('image'), addTechnology);
-router.put("/:userName/edit/technology/:id", verifyToken, authorizeOwner, editTechnologyImage.single('image'), editTechnology);
+router.post("/:userName/add/technology", verifyToken, authorizeOwner, defaultMulter.single('image'), addTechnology);
+router.put("/:userName/edit/technology/:id", verifyToken, authorizeOwner, defaultMulter.single('image'), editTechnology);
 router.delete("/:userName/delete/technology/:id", verifyToken, authorizeOwner, (req, res) => deleteSectionItem(req, res, technology.section, technology.subSection));
 
 // Contact

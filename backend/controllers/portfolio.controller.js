@@ -2,6 +2,7 @@ import Portfolio from "../models/portfolio.model.js";
 import { sendContactEmail } from "../nodemailer/emails.js"
 import fs from "fs";
 import path from 'path';
+import { uploadFromBuffer, deleteImage } from '../utils/cloudinary.js';
 
 class PortfolioError extends Error {
 	constructor(status, message) {
@@ -67,7 +68,16 @@ export const editPresentationSection = async (req, res) => {
 
 		userPortfolio.presentationSection.name = presentationSection.name || userPortfolio.presentationSection.name;
 		userPortfolio.presentationSection.rol = presentationSection.rol || userPortfolio.presentationSection.rol;
-		userPortfolio.presentationSection.image.url = req.imagePath || userPortfolio.presentationSection.image.url;
+
+		if (req.file) {
+			// Upload to Cloudinary
+			const sectionId = userPortfolio.presentationSection._id;
+  			const result = await uploadFromBuffer(req.file.buffer, 'portfolio/presentation', `${userName}-${sectionId}`);
+
+			userPortfolio.presentationSection.image.url = `${result.public_id}.${result.format}`
+		} else {
+			userPortfolio.presentationSection.image.url = userPortfolio.presentationSection.image.url;
+		}
 
 		await userPortfolio.save();
 
@@ -198,26 +208,16 @@ export const addProject = async (req, res) => {
 		};
 		userPortfolio.projectSection.projects.push(projectTmp);
 
-		await userPortfolio.save();
+		if (req.file) {
+			const project = userPortfolio.projectSection.projects[userPortfolio.projectSection.projects.length - 1];
+			const projectId = project._id;
+			const result = await uploadFromBuffer(req.file.buffer, 'portfolio/projects', `${userName}-${projectId}`);
 
-		const project = userPortfolio.projectSection.projects[userPortfolio.projectSection.projects.length - 1];
-		const projectId = project._id;
+			project.image.url = `${result.public_id}.${result.format}`
+			await userPortfolio.save()
+		}
 
-		renameFile(req.imagePath, userName, projectId, result => {
-			if (!result.success) {
-				return res.status(500).json({ message: 'Error renaming image', error: err });
-			}
-			project.image.url = result.newPath;
-			userPortfolio.save()
-				.then(() => {
-					res.status(200).json({
-						message: 'Projecto agregado exitosamente',
-					});
-				})
-				.catch(err => {
-					res.status(500).json({ message: 'Error agregando proyecto', error: err });
-				});
-		});
+		res.status(200).json({message: 'Projecto agregado exitosamente'});
 	} catch (error) {
 		res.status(error.status || 500).json({ message: error.message });
 	}
@@ -238,9 +238,12 @@ export const editProject = async (req, res) => {
 
 		project.name.text = projectSection.project.name.text || project.name.text;
 		project.description.text = projectSection.project.description.text || project.description.text;
-		project.image.url = req.imagePath || project.image.url;
 		project.demoLink = { text: projectSection.project.demoLink.text, link: projectSection.project.demoLink.link } || project.demoLink;
 		project.gitHubLink = { text: projectSection.project.gitHubLink.text, link: projectSection.project.gitHubLink.link } || project.gitHubLink;
+
+		if (req.file) {
+			await uploadFromBuffer(req.file.buffer, 'portfolio/projects', `${userName}-${project._id}`);
+		}
 
 		await userPortfolio.save();
 
@@ -348,26 +351,16 @@ export const addCertificate = async (req, res) => {
 			description: { text: certificateSection.certificate.description.text },
 		});
 
-		await userPortfolio.save();
+		if (req.file) {
+			const certificate = userPortfolio.certificateSection.certificates[userPortfolio.certificateSection.certificates.length - 1];
+			const certificateId = certificate._id;
+			const result = await uploadFromBuffer(req.file.buffer, 'portfolio/certificates', `${userName}-${certificateId}`);
 
-		const certificate = userPortfolio.certificateSection.certificates[userPortfolio.certificateSection.certificates.length - 1];
-		const certificateId = certificate._id;
+			certificate.image.url = `${result.public_id}.${result.format}`
+		}
+		await userPortfolio.save()
 
-		renameFile(req.imagePath, userName, certificateId, result => {
-			if (!result.success) {
-				return res.status(500).json({ message: 'Error renaming image', error: err });
-			}
-			certificate.image.url = result.newPath;
-			userPortfolio.save()
-				.then(() => {
-					res.status(200).json({
-						message: 'Certificado agregado exitosamente',
-					});
-				})
-				.catch(err => {
-					res.status(500).json({ message: 'Error agregando certificado', error: err });
-				});
-		});
+		res.status(200).json({message: 'Certificado agregado exitosamente'});
 	} catch (error) {
 		res.status(error.status || 500).json({ message: error.message });
 	}
@@ -388,7 +381,10 @@ export const editCertificate = async (req, res) => {
 
 		certificate.name.text = certificateSection.certificate.name.text || certificate.name.text;
 		certificate.description.text = certificateSection.certificate.description.text || certificate.description.text;
-		certificate.image.url = req.imagePath || certificate.image.url;
+
+		if (req.file) {
+			await uploadFromBuffer(req.file.buffer, 'portfolio/certificates', `${userName}-${certificate._id}`);
+		}
 
 		await userPortfolio.save();
 		res.status(200).json({ message: "Certificado actualizado" });
@@ -428,26 +424,16 @@ export const addTechnology = async (req, res) => {
 			name: { text: technologySection.technology.name.text },
 		});
 
-		await userPortfolio.save();
+		if (req.file) {
+			const technology = userPortfolio.technologySection.technologies[userPortfolio.technologySection.technologies.length - 1];
+			const technologyId = technology._id;
+			const result = await uploadFromBuffer(req.file.buffer, 'portfolio/technologies', `${userName}-${technologyId}`);
 
-		const technology = userPortfolio.technologySection.technologies[userPortfolio.technologySection.technologies.length - 1];
-		const technologyId = technology._id;
+			technology.image.url = `${result.public_id}.${result.format}`
+		}
+		await userPortfolio.save()
 
-		renameFile(req.imagePath, userName, technologyId, result => {
-			if (!result.success) {
-				return res.status(500).json({ message: 'Error renaming image', error: err });
-			}
-			technology.image.url = result.newPath;
-			userPortfolio.save()
-				.then(() => {
-					res.status(200).json({
-						message: 'Tecnologia agregado exitosamente',
-					});
-				})
-				.catch(err => {
-					res.status(500).json({ message: 'Error agregando tecnologia', error: err });
-				});
-		})
+		res.status(200).json({message: 'Tecnologia agregada exitosamente'});
 	} catch (error) {
 		res.status(error.status || 500).json({ message: error.message });
 	}
@@ -467,7 +453,10 @@ export const editTechnology = async (req, res) => {
 		const technologySection = JSON.parse(req.body.technologySection);
 
 		technology.name.text = technologySection.technology.name.text || technology.name.text;
-		technology.image.url = req.imagePath || technology.image.url;
+
+		if (req.file) {
+			await uploadFromBuffer(req.file.buffer, 'portfolio/technologies', `${userName}-${technology._id}`);
+		}
 
 		await userPortfolio.save();
 		res.status(200).json({ message: "Tecnologia actualizada" });
@@ -480,12 +469,12 @@ export const editTechnology = async (req, res) => {
 export const sendContactSectionEmail = async (req, res) => {
 	const { formData, userEmail } = req.body;
 	try {
-	  sendContactEmail(formData.name, formData.email, formData.subject, formData.message, userEmail);
-	  res.status(200).json({ message: "Email de contacto enviado exitosamente" });
+		sendContactEmail(formData.name, formData.email, formData.subject, formData.message, userEmail);
+		res.status(200).json({ message: "Email de contacto enviado exitosamente" });
 	} catch (error) {
-	  res.status(500).json({ message: error.message });
+		res.status(500).json({ message: error.message });
 	}
-  };
+};
 
 export const editContactSection = async (req, res) => {
 	const { userName } = req.params;
@@ -535,16 +524,24 @@ const renameFile = (oldPath, userName, itemId, updateReferenceCallback) => {
 	});
 }
 
-const deleteImageIfNecessary = async (imagePath) => {
-	// if the image starts with defaolt dont delete it
-	if (!imagePath.includes('default-')) {
-	   try {
-		  await fs.promises.unlink(imagePath);
-		  console.log('File deleted successfully:', imagePath);
-	   } catch (err) {
-		  throw new PortfolioError(500, "Error deleting the associated image");
-	   }
-	} else {
-	   console.log('Image is default, not deleting:', imagePath);
+const deleteImageIfNecessary = async (imageUrl) => {
+	try {
+		// Don’t delete default images
+		if (imageUrl.includes("default-")) {
+			console.log("Image is default, not deleting:", imageUrl);
+			return;
+		}
+
+		// Extract public_id from the URL
+		// Example URL: https://res.cloudinary.com/de4s5tliq/image/upload/v1758406050/portfolio/presentation/test-68cf5e5b1d89e399426d5984.jpg
+		const parts = imageUrl.split("/");
+		const publicIdWithExt = parts.slice(-3).join("/"); // e.g. "portfolio/presentation/test-68cf5e5b1d89e399426d5984.jpg""
+		const publicId = publicIdWithExt.replace(/\.[^/.]+$/, ""); // remove extension
+
+		await deleteImage(publicId)
+
+		console.log("File deleted successfully:", publicId);
+	} catch (err) {
+		throw new PortfolioError(500, "Error deleting the associated image");
 	}
- };
+};

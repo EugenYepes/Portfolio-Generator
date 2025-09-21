@@ -50,8 +50,8 @@ const DateSchema = new mongoose.Schema({
 }, { _id: false });
 
 const ImageSchema = new mongoose.Schema({
-	url: { type: String, default: "image" },
-}, { _id: false });
+	url: { type: String, default: "image", get: (v) => `${process.env.BASE_URL}${v}` },
+}, { _id: false, toJSON: { getters: true }, toObject: { getters: true } });
 
 const PortfolioSchema = new mongoose.Schema({
 	user: { type: userSchema, default: () => ({}) },
@@ -68,7 +68,7 @@ const PortfolioSchema = new mongoose.Schema({
 		},
 		image: {
 			type: ImageSchema, default: () => ({
-				url: "storage/presentation/default-presentation.jpg"
+				url: "portfolio/presentation/default-presentation.jpg"
 			})
 		},
 		_id: { type: mongoose.Schema.Types.ObjectId, auto: true }
@@ -126,7 +126,7 @@ const PortfolioSchema = new mongoose.Schema({
 				},
 				image: {
 					type: ImageSchema, default: () => ({
-						url: "storage/projects/default-project.jpg"
+						url: "portfolio/projects/default-project.jpg"
 					})
 				},
 				demoLink: {
@@ -182,7 +182,7 @@ const PortfolioSchema = new mongoose.Schema({
 				description: { type: TextSchema, default: () => ({}) },
 				image: {
 					type: ImageSchema, default: () => ({
-						url: "storage/certificates/default-certificate.jpg"
+						url: "portfolio/certificates/default-certificate.jpg"
 					})
 				},
 				_id: { type: mongoose.Schema.Types.ObjectId, auto: true }
@@ -205,7 +205,7 @@ const PortfolioSchema = new mongoose.Schema({
 				},
 				image: {
 					type: ImageSchema, default: () => ({
-						url: "storage/technologies/default-technology.jpg"
+						url: "portfolio/technologies/default-technology.jpg"
 					})
 				},
 				_id: { type: mongoose.Schema.Types.ObjectId, auto: true }
