@@ -189,7 +189,7 @@ export const logout = async (req, res) => {
 }
 
 export const forgotPassword = async (req, res) => {
-  const {email} = req.body;
+  const { email, clientUrl } = req.body;
   try {
     const userPortfolio = await Portfolio.findOne({ 'user.email': email });
     if(!userPortfolio){
@@ -209,7 +209,7 @@ export const forgotPassword = async (req, res) => {
 
     //* Mandamos el mail
     //* Guardamos como parametro la url para poder reemplarla en el boton del mail que vamos a mandar
-    await sendPasswordResetEmail(userPortfolio.user.email, `${process.env.CLIENT_URL}/reset-password/${resetToken}`)
+    await sendPasswordResetEmail(userPortfolio.user.email, `${clientUrl}/reset-password/${resetToken}`)
 
     res.status(200).json({ success: true, message: "Se mando el mail para restablecer la contraseña del usuario", token: userPortfolio.user.resetPasswordToken})
 
