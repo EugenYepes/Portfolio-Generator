@@ -10,6 +10,9 @@ import authRouter from "./routes/auth.route.js"
 const PORT = process.env.PORT || 4000; //* Si process.env.PORT es undefined se usara por defecto el puerto 4000
 const app = express();
 
+console.log("CLIENT_URL =", process.env.CLIENT_URL);
+console.log("PORT =", process.env.PORT);
+
 app.use(cors({
   origin: process.env.CLIENT_URL,
   credentials: true
