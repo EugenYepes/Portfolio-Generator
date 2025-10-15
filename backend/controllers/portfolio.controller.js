@@ -62,7 +62,7 @@ export const editPresentationSection = async (req, res) => {
 	const { userName } = req.params;
 
 	try {
-		const userPortfolio = await findPortfolioByUserName(userName);
+		const userPortfolio = req.portfolio; // get from the middlewere
 
 		const presentationSection = JSON.parse(req.body.presentationSection);
 
@@ -509,20 +509,6 @@ export const editContactSection = async (req, res) => {
 		res.status(error.status || 500).json({ message: error.message });
 	}
 };
-
-
-const renameFile = (oldPath, userName, itemId, updateReferenceCallback) => {
-	const ext = path.extname(oldPath);
-	const dir = path.dirname(oldPath);
-	const newPath = `${dir}/${userName}-${itemId}${ext}`;
-
-	fs.rename(oldPath, newPath, (err) => {
-		if (err) {
-			return updateReferenceCallback({ success: false, error: err });
-		}
-		updateReferenceCallback({ success: true, newPath });
-	});
-}
 
 const deleteImageIfNecessary = async (imageUrl) => {
 	try {

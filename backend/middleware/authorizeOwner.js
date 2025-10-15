@@ -8,16 +8,18 @@ export const authorizeOwner = async (req, res, next) => {
     // Busca el portafolio por el nombre de usuario y verifica que coincida con el usuario autenticado
     const portfolio = await Portfolio.findOne({ "user.userName": userName });
     if (!portfolio) {
-      return res.status(404).json({ success: false, message: "Portafolio no encontrado" });
+      return res.status(404).json({ message: "Portafolio no encontrado" });
     }
 
     // Verifica si el usuario autenticado es el dueño del portafolio
     if (portfolio.user._id.toString() !== userId) {
-      return res.status(403).json({ success: false, message: "No autorizado" });
+      return res.status(403).json({ message: "No autorizado" });
     }
+
+    req.portfolio = portfolio; // pass the portfolio to the controller.
 
     next();
   } catch (error) {
-    res.status(500).json({ success: false, message: "Error de servidor" });
+    res.status(500).json({ message: "Error de servidor" });
   }
 };
