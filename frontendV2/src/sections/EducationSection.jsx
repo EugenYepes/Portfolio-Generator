@@ -84,7 +84,7 @@ const EducationSection = ({ userName }) => {
                   </>
                 )}
               </h4>
-              <span className="italic">
+              <span className="italic text-gray-400">
                 {edu.date.from || "Fecha inicio"} -{" "}
                 {edu.date.to || "Fecha fin"}
               </span>

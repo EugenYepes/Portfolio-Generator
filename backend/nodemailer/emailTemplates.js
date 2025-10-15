@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 export const VERIFICATION_EMAIL_TEMPLATE = `
 <!DOCTYPE html>
 <html lang="es">
@@ -109,7 +111,7 @@ export const WELCOME_EMAIL_TEMPLATE = `
   <div style="background-color: #f9f9f9; padding: 20px; border-radius: 0 0 5px 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
     <p>Hola {userName},</p>
     <p>¡Gracias por unirte a nuestra comunidad! Estamos muy contentos de tenerte a bordo.</p>
-    <p>Estamos aquí para ayudarte. Si tienes alguna pregunta o inquietud, no dudes en ponerte en contacto con nuestro equipo de soporte.</p>
+    <p>Estamos aquí para ayudarte. Si tienes alguna pregunta o inquietud, no dudes en ponerte en contacto con nuestro equipo de soporte. ${process.env.EMAIL_USER}</p>
     <p>¡Esperamos que disfrutes de tu experiencia con nosotros!</p>
     <p>Atentamente,<br>El Equipo de Portfolio Generator</p>
   </div>

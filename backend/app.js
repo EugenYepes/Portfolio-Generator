@@ -11,11 +11,7 @@ const PORT = process.env.PORT || 4000; //* Si process.env.PORT es undefined se u
 const app = express();
 
 app.use(cors({
-  origin: "https://portfolio-generator-flax.vercel.app",
-  // origin: [
-  //   "http://localhost:5173",           // for local dev
-  //   "https://portfolio-generator-flax.vercel.app"
-  // ],
+  origin: process.env.CLIENT_URL,
   credentials: true
 }));
 app.use(express.json()); //* Parsea automáticamente las solicitudes con formato JSON.

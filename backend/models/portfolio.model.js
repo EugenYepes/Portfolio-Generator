@@ -58,12 +58,12 @@ const PortfolioSchema = new mongoose.Schema({
 	presentationSection: {
 		name: {
 			type: TitleSchema, default: () => ({
-				text: "User Full Name"
+				text: "Nombre completo"
 			})
 		},
 		rol: {
 			type: TextSchema, default: () => ({
-				text: "I'm a developer!"
+				text: "Soy un desarrollador"
 			})
 		},
 		image: {
@@ -81,7 +81,7 @@ const PortfolioSchema = new mongoose.Schema({
 		},
 		bodyText: {
 			type: TextSchema, default: () => ({
-				text: "This sections its to talk about me!"
+				text: "Esta sección es para contar acerca de mí"
 			})
 		},
 		_id: { type: mongoose.Schema.Types.ObjectId, auto: true }
@@ -96,7 +96,7 @@ const PortfolioSchema = new mongoose.Schema({
 			{
 				workName: {
 					type: TextSchema, default: () => ({
-						text: "Experience"
+						text: "Experiencia"
 					})
 				},
 				description: { type: TextSchema, default: () => ({}) },
@@ -264,12 +264,12 @@ const PortfolioSchema = new mongoose.Schema({
 		},
 		location: {
 			type: TextSchema, default: () => ({
-				text: "Chipre"
+				text: "Argentina"
 			})
 		},
 		bodyText: {
 			type: TextSchema, default: () => ({
-				text: "This sections its for contact me!"
+				text: "Esta sección es para poner mis datos de contacto"
 			})
 		},
 		_id: { type: mongoose.Schema.Types.ObjectId, auto: true }

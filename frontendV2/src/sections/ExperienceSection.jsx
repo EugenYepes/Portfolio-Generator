@@ -73,7 +73,7 @@ const ExperienceSection = ({ userName }) => {
                 <h4 className="text-2xl font-bold dark:text-white">
                   {exp.workName.text || "Nombre de la experiencia"}
                 </h4>
-                <span className="italic">
+                <span className="italic text-gray-400">
                   {exp.date.from || "Fecha inicio"} -{" "}
                   {exp.date.to || "Fecha fin"}
                 </span>
